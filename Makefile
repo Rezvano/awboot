@@ -50,10 +50,10 @@ begin:
 	@$(CC) -v 2>&1 | tail -1
 
 build_revision:
-	@/bin/expr `cat .build_revision` + 1 > .build_revision
+	expr `cat .build_revision` + 1 > .build_revision
 
 link_board:
-	@/bin/ln -fs board-$(BOARD).h boards/board.h
+	ln -fs board-$(BOARD).h boards/board.h
 
 .PHONY: tools boot.img
 .SILENT:

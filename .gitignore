@@ -11,6 +11,5 @@ tools/mksunxi
 
 *boot.img
 
-.build_revision
 .vscode-ctags
 .vscode
