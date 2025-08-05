@@ -33,7 +33,7 @@
 #define UNUSED_INFO __attribute__((__unused__))
 #endif
 
-#if LOG_LEVEL >= LOG_WARNING
+#if LOG_LEVEL >= LOG_WARN
 #define warning(fmt, ...) message("[W] " fmt, ##__VA_ARGS__)
 #define UNUSED_WARNING
 #else
