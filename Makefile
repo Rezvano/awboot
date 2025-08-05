@@ -15,7 +15,7 @@ include	arch/arm32/arm32.mk
 include	lib/lib.mk
 
 CFLAGS += -mcpu=cortex-a7 -mthumb-interwork -mthumb -mno-unaligned-access -mfpu=neon-vfpv4 -mfloat-abi=hard
-CFLAGS += -ffast-math -ffunction-sections -fdata-sections -Os -std=gnu99 -Wall -Wno-unused-function -g -MMD $(INCLUDES) $(DEFINES)
+CFLAGS += -ffast-math -ffunction-sections -fdata-sections -O0 -std=gnu99 -Wall -Wno-unused-function -g -MMD $(INCLUDES) $(DEFINES)
 #-Werror
 
 ASFLAGS += $(CFLAGS)
