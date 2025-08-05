@@ -237,7 +237,7 @@ int load_spi_nand(sunxi_spi_t *spi, image_info_t *image)
 	spi_nand_read(spi, image->of_dest, CONFIG_SPINAND_DTB_ADDR, (uint32_t)size);
 
 	time = time_us() - start;
-	info("SPI-NAND: read dt blob of size %u at %.2fMB/S\r\n", size, (f32)(size / time));
+	info("SPI-NAND: read dt blob of size %u at %.2fMB/S, %dus\r\n", size, (f32)(size / time), time);
 
 	/* get kernel size and read */
 	spi_nand_read(spi, image->dest, CONFIG_SPINAND_KERNEL_ADDR, (uint32_t)sizeof(linux_zimage_header_t));
@@ -254,7 +254,7 @@ int load_spi_nand(sunxi_spi_t *spi, image_info_t *image)
 	spi_nand_read(spi, image->dest, CONFIG_SPINAND_KERNEL_ADDR, (uint32_t)size);
 
 	time = time_us() - start;
-	info("SPI-NAND: read Image of size %u at %.2fMB/S\r\n", size, (f32)(size / time));
+	info("SPI-NAND: read Image of size %u at %.2fMB/S, %dus\r\n", size, (f32)(size / time), time);
 
 	return 0;
 }

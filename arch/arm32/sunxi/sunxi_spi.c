@@ -658,7 +658,8 @@ int spi_nand_detect(sunxi_spi_t *spi)
 
 		if (spi->info.mode == SPI_IO_QUAD_RX) {
 			if (spi->info.id.mfr == (uint8_t)SPI_NAND_MFR_GIGADEVICE ||
-				spi->info.id.mfr == (uint8_t)SPI_NAND_MFR_FORESEE) {
+				spi->info.id.mfr == (uint8_t)SPI_NAND_MFR_FORESEE || 
+				spi->info.id.mfr == (uint8_t)SPI_NAND_MFR_ZETTA) {
 				if ((spi_nand_get_config(spi, CONFIG_ADDR_OTP, &val) == 0) && !(val & 0x01)) {
 					debug("SPI-NAND: enable Quad mode\r\n");
 					val |= (1 << 0);
