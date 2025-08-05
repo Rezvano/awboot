@@ -149,14 +149,15 @@ typedef enum {
 	SPI_NAND_MFR_MACRONIX	= 0xc2,
 	SPI_NAND_MFR_MICRON		= 0x2c,
 	SPI_NAND_MFR_FORESEE	= 0xcd,
+	SPI_NAND_MFR_ZETTA		= 0xba,
 } spi_mfr_id;
 
 static const spi_nand_info_t spi_nand_infos[] = {
 	/* Winbond */
 	{	 "W25N512GV",  {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xaa20, 2}, 2048,	 64, 64,	 512, 1, 1, SPI_IO_QUAD_RX},
-	{		 "W25N01GV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xaa21, 2}, 2048,	64, 64, 1024, 1, 1, SPI_IO_QUAD_RX},
-	{		 "W25M02GV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xab21, 2}, 2048,	64, 64, 1024, 1, 2, SPI_IO_QUAD_RX},
-	{		 "W25N02KV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xaa22, 2}, 2048, 128, 64, 2048, 1, 1, SPI_IO_QUAD_RX},
+	{	  "W25N01GV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xaa21, 2}, 2048,	64, 64, 1024, 1, 1, SPI_IO_QUAD_RX},
+	{	  "W25M02GV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xab21, 2}, 2048,	64, 64, 1024, 1, 2, SPI_IO_QUAD_RX},
+	{	  "W25N02KV",	 {.mfr = SPI_NAND_MFR_WINBOND, .dev = 0xaa22, 2}, 2048, 128, 64, 2048, 1, 1, SPI_IO_QUAD_RX},
 
  /* Gigadevice */
 	{ "GD5F1GQ4UAWxx", {.mfr = SPI_NAND_MFR_GIGADEVICE, .dev = 0x10, 1}, 2048,  64, 64, 1024, 1, 1, SPI_IO_QUAD_RX},
@@ -196,6 +197,9 @@ static const spi_nand_info_t spi_nand_infos[] = {
 
  /* FORESEE */
 	{	 "FS35SQA001G",	{.mfr = SPI_NAND_MFR_FORESEE, .dev = 0x7171, 2}, 2048,  64, 64, 1024, 1, 1, SPI_IO_QUAD_RX},
+
+ /* ZETTA */
+	{	  "ZD35Q1GC",		 {.mfr = SPI_NAND_MFR_ZETTA, .dev = 0x71, 1}, 2048,	64, 64, 1024, 1, 1, SPI_IO_QUAD_RX},
 };
 
 sunxi_spi_t		*spip;
@@ -544,7 +548,7 @@ static int spi_nand_info(sunxi_spi_t *spi)
 	if (r < 0)
 		return r;
 
-	if (rx[0] == 0xff) {
+	if (rx[0] == 0xff || rx[0] == 0x00) {
 		rxp = rx + 1; // Dummy data, shift by one byte
 	} else {
 		rxp = rx;
@@ -727,7 +731,8 @@ uint32_t spi_nand_read(sunxi_spi_t *spi, uint8_t *buf, uint32_t addr, uint32_t r
 		return -1;
 	}
 
-	if (spi->info.id.mfr == SPI_NAND_MFR_GIGADEVICE || spi->info.id.mfr == SPI_NAND_MFR_FORESEE) {
+	if (spi->info.id.mfr == SPI_NAND_MFR_GIGADEVICE || spi->info.id.mfr == SPI_NAND_MFR_FORESEE ||
+		spi->info.id.mfr == SPI_NAND_MFR_ZETTA) {
 		while (cnt > 0) {
 			ca = address & (spi->info.page_size - 1);
 			n  = cnt > (spi->info.page_size - ca) ? (spi->info.page_size - ca) : cnt;

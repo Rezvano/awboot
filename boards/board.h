@@ -1,0 +1,1 @@
+board-mangopi-dual-spinand.h
